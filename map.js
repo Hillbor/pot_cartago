@@ -1,34 +1,35 @@
 const map = L.map('map').setView([4.74700, -75.920420], 14);
 
-// Mapa base
-const mapaBase = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: '© OpenStreetMap contributors'
-}).addTo(map);
+// Mapas base
+const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap'
+});
 
-// Crear grupos vacíos para las capas superpuestas
-let capaComunas = L.layerGroup();
-let capaVias = L.layerGroup();
+const blancoYNegro = L.tileLayer('https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap (Blanco y negro)'
+});
 
-// Agregarlos al mapa si quieres que estén activas por defecto
-capaComunas.addTo(map);
-capaVias.addTo(map);
+const satelite = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenTopoMap'
+});
 
-// Control de capas (ya con las capas vacías)
+// Fondo inicial
+osm.addTo(map);
+
+// Grupos de capas
+const capaComunas = L.layerGroup().addTo(map);
+const capaVias = L.layerGroup().addTo(map);
+
+// Control de fondo de mapa
 const capasBase = {
-  "OpenStreetMap": mapaBase
+  "OpenStreetMap": osm,
+  "Blanco y negro": blancoYNegro,
+  "Topográfico": satelite
 };
 
-const capasSuperpuestas = {
-  "Comunas": capaComunas,
-  "Sistema vial": capaVias
-};
+L.control.layers(capasBase, {}, { position: 'bottomright' }).addTo(map);
 
-L.control.layers(capasBase, capasSuperpuestas, {
-  collapsed: false,
-  position: 'topright'
-}).addTo(map);
-
-// Cargar comunas en su grupo
+// Cargar capas dinámicas
 fetch('comunas.php')
   .then(res => res.json())
   .then(data => {
@@ -40,10 +41,9 @@ fetch('comunas.php')
         );
       }
     });
-    capaComunas.addLayer(geojson); // Añadir al grupo
+    capaComunas.addLayer(geojson);
   });
 
-// Cargar vías en su grupo
 fetch('vias.php')
   .then(res => res.json())
   .then(data => {
@@ -53,5 +53,22 @@ fetch('vias.php')
         layer.bindPopup(`Jerarquía: ${feature.properties.jerarquia}`);
       }
     });
-    capaVias.addLayer(geojson); // Añadir al grupo
+    capaVias.addLayer(geojson);
   });
+
+// Conectar checkbox del sidebar con las capas
+document.getElementById('chkComunas').addEventListener('change', function () {
+  if (this.checked) {
+    map.addLayer(capaComunas);
+  } else {
+    map.removeLayer(capaComunas);
+  }
+});
+
+document.getElementById('chkVias').addEventListener('change', function () {
+  if (this.checked) {
+    map.addLayer(capaVias);
+  } else {
+    map.removeLayer(capaVias);
+  }
+});
