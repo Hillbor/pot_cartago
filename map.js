@@ -1,24 +1,57 @@
-const map = L.map('map').setView([4.74700, -75.920420], 14); // Coordenadas de Cartago
+const map = L.map('map').setView([4.74700, -75.920420], 14);
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+// Mapa base
+const mapaBase = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
-function cargarCapa(url, color) {
-  fetch(url)
-    .then(res => res.json())
-    .then(data => {
-      L.geoJSON(data, {
-        style: { color: color, weight: 2 },
-        onEachFeature: function (feature, layer) {
-          if (feature.properties && feature.properties.nombre) {
-            layer.bindPopup(feature.properties.nombre);
-          }
-        }
-      }).addTo(map);
-    });
-}
+// Crear grupos vacíos para las capas superpuestas
+let capaComunas = L.layerGroup();
+let capaVias = L.layerGroup();
 
-cargarCapa('geojson_comunas.php', 'green');
-//cargarCapa('geojson_manzanas.php', 'blue');
-//cargarCapa('geojson_vias.php', 'red');
+// Agregarlos al mapa si quieres que estén activas por defecto
+capaComunas.addTo(map);
+capaVias.addTo(map);
+
+// Control de capas (ya con las capas vacías)
+const capasBase = {
+  "OpenStreetMap": mapaBase
+};
+
+const capasSuperpuestas = {
+  "Comunas": capaComunas,
+  "Sistema vial": capaVias
+};
+
+L.control.layers(capasBase, capasSuperpuestas, {
+  collapsed: false,
+  position: 'topright'
+}).addTo(map);
+
+// Cargar comunas en su grupo
+fetch('comunas.php')
+  .then(res => res.json())
+  .then(data => {
+    const geojson = L.geoJSON(data, {
+      style: { color: 'green', weight: 2 },
+      onEachFeature: function (feature, layer) {
+        layer.bindPopup(
+          `ID: ${feature.properties.id}<br>Área: ${feature.properties.shape_area}`
+        );
+      }
+    });
+    capaComunas.addLayer(geojson); // Añadir al grupo
+  });
+
+// Cargar vías en su grupo
+fetch('vias.php')
+  .then(res => res.json())
+  .then(data => {
+    const geojson = L.geoJSON(data, {
+      style: { color: 'red', weight: 2 },
+      onEachFeature: function (feature, layer) {
+        layer.bindPopup(`Jerarquía: ${feature.properties.jerarquia}`);
+      }
+    });
+    capaVias.addLayer(geojson); // Añadir al grupo
+  });
