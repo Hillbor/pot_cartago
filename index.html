@@ -12,17 +12,43 @@
   </header>
 
   <div id="sidebar">
-  <h2>Capas</h2>
-  <label><input type="checkbox" id="chkComunas" checked> Comunas</label><br>
-  <small>Cobertura administrativa del municipio.</small><br><br>
+    <h2>Capas</h2>
 
-  <label><input type="checkbox" id="chkVias" checked> Sistema vial</label><br>
-  <small>Clasificación jerárquica de vías.</small>
-</div>
+    <!-- Grupo: Comunas -->
+    <div class="grupo">
+      <button class="grupo-btn">Subdivisión urbana estructural</button>
+      <div class="grupo-contenido">
+        <label><input type="checkbox" id="chkComunas" checked> Comunas</label>
+        <small>Cobertura administrativa del municipio.</small>
+      </div>
+    </div>
+
+    <!-- Grupo: Vías -->
+    <div class="grupo">
+      <button class="grupo-btn">Infraestructura vial y transporte</button>
+      <div class="grupo-contenido">
+        <label><input type="checkbox" id="chkVias" checked> Sistema vial</label>
+        <small>Clasificación jerárquica de vías.</small>
+      </div>
+    </div>
+
+    <div class="grupo">
+      <button class="grupo-btn">Mapas base</button>
+      <div class="grupo-contenido">
+        <label><input type="radio" name="basemap" value="osm" checked> OpenStreetMap</label><br>
+        <label><input type="radio" name="basemap" value="bw"> Blanco y negro</label><br>
+        <label><input type="radio" name="basemap" value="topo"> Topográfico</label>
+        <small>Selecciona el fondo del mapa.</small>
+      </div>
+    </div>
+
+  </div>
 
   <div id="map"></div>
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="map.js"></script>
+
+
 </body>
 </html>

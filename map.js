@@ -1,74 +1,100 @@
-const map = L.map('map').setView([4.74700, -75.920420], 14);
+// map.js - Lógica del mapa y carga de capas
 
-// Mapas base
+// Inicializar mapa centrado en Cartago
+const map = L.map('map').setView([4.742509, -75.928639], 13);
+
+// Capas base
 const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap'
 });
 
-const blancoYNegro = L.tileLayer('https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
-  attribution: '© OpenStreetMap (Blanco y negro)'
+const blancoYNegro = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
+  attribution: '© Stadia Maps, © OpenMapTiles, © OpenStreetMap'
 });
 
 const satelite = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenTopoMap'
 });
 
-// Fondo inicial
-osm.addTo(map);
+osm.addTo(map); // Añadir fondo base inicial
 
-// Grupos de capas
+// Capas dinámicas
 const capaComunas = L.layerGroup().addTo(map);
 const capaVias = L.layerGroup().addTo(map);
 
-// Control de fondo de mapa
-const capasBase = {
-  "OpenStreetMap": osm,
-  "Blanco y negro": blancoYNegro,
-  "Topográfico": satelite
-};
+// Mostrar u ocultar contenido de grupos
+for (const button of document.querySelectorAll('.grupo-btn')) {
+  button.addEventListener('click', () => {
+    const content = button.nextElementSibling;
+    content.style.display = content.style.display === 'block' ? 'none' : 'block';
+  });
+}
 
-L.control.layers(capasBase, {}, { position: 'bottomright' }).addTo(map);
+// Mostrar contenido de todos los grupos por defecto
+for (const div of document.querySelectorAll('.grupo-contenido')) {
+  div.style.display = 'block';
+}
 
-// Cargar capas dinámicas
+// Cargar GeoJSON: comunas
 fetch('comunas.php')
   .then(res => res.json())
   .then(data => {
     const geojson = L.geoJSON(data, {
       style: { color: 'green', weight: 2 },
-      onEachFeature: function (feature, layer) {
-        layer.bindPopup(
-          `ID: ${feature.properties.id}<br>Área: ${feature.properties.shape_area}`
-        );
+      onEachFeature: (feature, layer) => {
+        layer.bindPopup(`ID: ${feature.properties.id}<br>Área: ${feature.properties.shape_area}`);
       }
     });
     capaComunas.addLayer(geojson);
   });
 
+// Cargar GeoJSON: sistema vial
 fetch('vias.php')
   .then(res => res.json())
   .then(data => {
     const geojson = L.geoJSON(data, {
       style: { color: 'red', weight: 2 },
-      onEachFeature: function (feature, layer) {
+      onEachFeature: (feature, layer) => {
         layer.bindPopup(`Jerarquía: ${feature.properties.jerarquia}`);
       }
     });
     capaVias.addLayer(geojson);
   });
 
-// Conectar checkbox del sidebar con las capas
-document.getElementById('chkComunas').addEventListener('change', function () {
-  if (this.checked) {
-    map.addLayer(capaComunas);
-  } else {
-    map.removeLayer(capaComunas);
-  }
-});
+// Activar/desactivar capas desde el sidebar
+const toggleLayer = (checkboxId, layerGroup) => {
+  document.getElementById(checkboxId).addEventListener('change', function () {
+    this.checked ? map.addLayer(layerGroup) : map.removeLayer(layerGroup);
+  });
+};
 
-document.getElementById('chkVias').addEventListener('change', function () {
-  if (this.checked) {
-    map.addLayer(capaVias);
-  } else {
-    map.removeLayer(capaVias);
-  }
+toggleLayer('chkComunas', capaComunas);
+toggleLayer('chkVias', capaVias);
+
+// ----------------------------
+// Selector personalizado de mapa base
+// ----------------------------
+
+// Eliminar capa base actual y agregar la nueva, manteniendo capas dinámicas
+function cambiarMapaBaseManual(layer) {
+  map.eachLayer(l => {
+    if (l instanceof L.TileLayer && !l._url.includes('geojson')) map.removeLayer(l);
+  });
+  layer.addTo(map);
+  capaComunas.addTo(map);
+  capaVias.addTo(map);
+}
+
+// Asignar eventos a los radios personalizados de mapa base
+const radiosBaseMap = document.querySelectorAll('input[name="basemap"]');
+radiosBaseMap.forEach(radio => {
+  radio.addEventListener('change', () => {
+    if (radio.checked) {
+      switch (radio.value) {
+        case 'osm': cambiarMapaBaseManual(osm); break;
+        case 'bw': cambiarMapaBaseManual(blancoYNegro); break;
+        case 'topo': cambiarMapaBaseManual(satelite); break;
+      }
+    }
+  });
 });
