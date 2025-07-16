@@ -99,39 +99,3 @@ header h1 {
   margin-bottom: 10px;
   font-size: 12px;
 }
-
-#info-pot {
-  position: fixed;
-  top: 60px; /* debajo del header */
-  right: 0;
-  width: 300px;
-  bottom: 0;
-  background-color: #f9f9f9;
-  border-left: 1px solid #ccc;
-  padding: 20px;
-  overflow-y: auto;
-  z-index: 1000;
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-#info-pot h2 {
-  font-size: 18px;
-  color: #2c3e50;
-  margin-top: 0;
-}
-
-#info-pot h3 {
-  font-size: 16px;
-  margin-top: 20px;
-  color: #34495e;
-}
-
-#info-pot ul {
-  padding-left: 18px;
-}
-
-#info-pot li {
-  margin-bottom: 8px;
-}
