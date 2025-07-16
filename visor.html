@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mapa SIG Cartago</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+
+<body>
+  <header>
+    <h1>SIG Cartago - Geovisor Interactivo</h1>
+  </header>
+
+  <div id="main-container">
+    <div id="sidebar">
+      <h2>Capas</h2>
+
+      <!-- Grupo: Comunas -->
+      <div class="grupo">
+        <button class="grupo-btn">Subdivisión urbana estructural</button>
+        <div class="grupo-contenido">
+          <label><input type="checkbox" id="chkComunas" checked> Comunas</label>
+          <small>Cobertura administrativa del municipio.</small>
+        </div>
+      </div>
+
+      <!-- Grupo: Vías -->
+      <div class="grupo">
+        <button class="grupo-btn">Infraestructura vial y transporte</button>
+        <div class="grupo-contenido">
+          <label><input type="checkbox" id="chkVias" checked> Sistema vial</label>
+          <small>Clasificación jerárquica de vías.</small>
+        </div>
+      </div>
+
+      <div class="grupo">
+        <button class="grupo-btn">Mapas base</button>
+        <div class="grupo-contenido">
+          <label><input type="radio" name="basemap" value="osm" checked> OpenStreetMap</label><br>
+          <label><input type="radio" name="basemap" value="bw"> Blanco y negro</label><br>
+          <label><input type="radio" name="basemap" value="topo"> Topográfico</label>
+          <small>Selecciona el fondo del mapa.</small>
+        </div>
+      </div>
+    </div>
+
+    <div id="map"></div>
+
+    <div id="info-pot">
+      <h2>¿Qué es el POT?</h2>
+      <p>
+        El Plan de Ordenamiento Territorial (POT) es un instrumento de planificación que organiza el desarrollo físico del territorio de un municipio, buscando un uso racional del suelo, la sostenibilidad ambiental y la mejora de la calidad de vida.
+      </p>
+
+      <h3>Importancia del POT</h3>
+      <ul>
+        <li>Define el uso del suelo: urbano, rural, protegido, etc.</li>
+        <li>Regula el crecimiento de la ciudad de manera ordenada.</li>
+        <li>Coordina proyectos de infraestructura, vivienda y servicios.</li>
+        <li>Protege zonas ambientales y patrimonio cultural.</li>
+        <li>Fomenta el desarrollo económico sostenible.</li>
+      </ul>
+
+      <p>
+        Este geovisor permite visualizar capas temáticas clave del POT del municipio de Cartago, facilitando la comprensión del territorio y apoyando la toma de decisiones.
+      </p>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="map.js"></script>
+</body>
+
+
+</html>

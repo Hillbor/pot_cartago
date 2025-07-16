@@ -2,53 +2,78 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Mapa SIG Cartago</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <title>Inicio - Geovisor POT Cartago</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 32px;
+      color: #2c3e50;
+    }
+
+    .container {
+      max-width: 800px;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    ul {
+      text-align: left;
+    }
+
+    button {
+      margin-top: 30px;
+      background-color: #2980b9;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #3498db;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>SIG Cartago - Geovisor Interactivo</h1>
-  </header>
 
-  <div id="sidebar">
-    <h2>Capas</h2>
+  <div class="container">
+    <h1>Geovisor POT - Municipio de Cartago</h1>
 
-    <!-- Grupo: Comunas -->
-    <div class="grupo">
-      <button class="grupo-btn">Subdivisión urbana estructural</button>
-      <div class="grupo-contenido">
-        <label><input type="checkbox" id="chkComunas" checked> Comunas</label>
-        <small>Cobertura administrativa del municipio.</small>
-      </div>
-    </div>
+    <p>El <strong>Plan de Ordenamiento Territorial (POT)</strong> es una herramienta fundamental para organizar el desarrollo físico del municipio, garantizando el uso racional del suelo, la protección del medio ambiente y una mejor calidad de vida para sus habitantes.</p>
 
-    <!-- Grupo: Vías -->
-    <div class="grupo">
-      <button class="grupo-btn">Infraestructura vial y transporte</button>
-      <div class="grupo-contenido">
-        <label><input type="checkbox" id="chkVias" checked> Sistema vial</label>
-        <small>Clasificación jerárquica de vías.</small>
-      </div>
-    </div>
+    <h3>¿Por qué es importante?</h3>
+    <ul>
+      <li>Define el uso del suelo (urbano, rural, protegido, etc.).</li>
+      <li>Regula el crecimiento del municipio de manera ordenada.</li>
+      <li>Coordina obras públicas, vivienda, servicios e infraestructura.</li>
+      <li>Protege el patrimonio natural y cultural.</li>
+      <li>Fomenta el desarrollo económico sostenible.</li>
+    </ul>
 
-    <div class="grupo">
-      <button class="grupo-btn">Mapas base</button>
-      <div class="grupo-contenido">
-        <label><input type="radio" name="basemap" value="osm" checked> OpenStreetMap</label><br>
-        <label><input type="radio" name="basemap" value="bw"> Blanco y negro</label><br>
-        <label><input type="radio" name="basemap" value="topo"> Topográfico</label>
-        <small>Selecciona el fondo del mapa.</small>
-      </div>
-    </div>
+    <p>Este geovisor permite visualizar las capas clave del POT, facilitando el análisis y la toma de decisiones sobre el territorio.</p>
 
+    <a href="visor.html"><button>Ingresar al Geovisor</button></a>
   </div>
-
-  <div id="map"></div>
-
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script src="map.js"></script>
-
 
 </body>
 </html>

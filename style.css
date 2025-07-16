@@ -1,4 +1,4 @@
-/* style.css - Estilos del geovisor */
+/* style.css - Estilos para el geovisor */
 
 body {
   margin: 0;
@@ -7,14 +7,14 @@ body {
 
 #map {
   position: absolute;
-  left: 250px; /* Espacio para la barra lateral */
-  top: 60px;   /* Altura del header */
+  left: 250px; /* espacio para el sidebar */
+  top: 60px;   /* espacio para el header */
   right: 0;
   bottom: 0;
   z-index: 0;
 }
 
-/* Header */
+/* Header fijo */
 header {
   position: fixed;
   top: 0;
@@ -43,11 +43,12 @@ header h1 {
   left: 0;
   height: 100vh;
   width: 250px;
-  background-color: #ffffff;
+  background-color: #fff;
   padding: 20px;
   box-shadow: 2px 0 5px rgba(0,0,0,0.2);
   z-index: 1000;
   overflow-y: auto;
+  font-family: Arial, sans-serif;
 }
 
 #sidebar h2 {
@@ -99,35 +100,38 @@ header h1 {
   font-size: 12px;
 }
 
-
-
-/* Recuadro del selector de mapa base */
-#basemap-control {
+#info-pot {
   position: fixed;
-  top: 60px;
+  top: 60px; /* debajo del header */
   right: 0;
-  width: 200px;
-  background-color: #ffffff;
-  border-left: 1px solid #ccc;
-  padding: 15px;
-  z-index: 1001;
-  font-size: 14px;
-  box-shadow: -2px 0 5px rgba(0,0,0,0.1);
-}
-
-#basemap-control h3 {
-  margin-top: 0;
-  font-size: 16px;
-  color: #2c3e50;
-  margin-bottom: 10px;
-}
-
-/* Ajustar el mapa para que no quede debajo del panel derecho */
-#map {
-  position: absolute;
-  top: 60px;
-  left: 250px;   /* ancho del sidebar izquierdo */
-  right: 200px;  /* ancho del panel derecho */
+  width: 300px;
   bottom: 0;
-  z-index: 0;
+  background-color: #f9f9f9;
+  border-left: 1px solid #ccc;
+  padding: 20px;
+  overflow-y: auto;
+  z-index: 1000;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+#info-pot h2 {
+  font-size: 18px;
+  color: #2c3e50;
+  margin-top: 0;
+}
+
+#info-pot h3 {
+  font-size: 16px;
+  margin-top: 20px;
+  color: #34495e;
+}
+
+#info-pot ul {
+  padding-left: 18px;
+}
+
+#info-pot li {
+  margin-bottom: 8px;
 }

@@ -98,3 +98,49 @@ radiosBaseMap.forEach(radio => {
     }
   });
 });
+
+
+// Crear y agregar leyenda dinámica
+const legend = L.control({ position: 'bottomright' });
+
+legend.onAdd = function () {
+  const div = L.DomUtil.create('div', 'info legend');
+  div.style.background = 'white';
+  div.style.padding = '10px';
+  div.style.border = '1px solid #ccc';
+  div.style.fontSize = '12px';
+  div.innerHTML = '<strong>Leyenda</strong><br>';
+  return div;
+};
+
+legend.addTo(map);
+
+// Función para actualizar la leyenda según capas activas
+function actualizarLeyenda() {
+  const div = document.querySelector('.legend');
+  if (!div) return;
+
+  let html = '<strong>Leyenda</strong><br>';
+
+  if (map.hasLayer(capaComunas)) {
+    html += `<div style="margin-top:5px;">
+               <span style="background:green; display:inline-block; width:12px; height:12px; margin-right:5px;"></span>
+               Comunas
+             </div>`;
+  }
+
+  if (map.hasLayer(capaVias)) {
+    html += `<div style="margin-top:5px;">
+               <span style="background:red; display:inline-block; width:12px; height:12px; margin-right:5px;"></span>
+               Vías
+             </div>`;
+  }
+
+  div.innerHTML = html;
+}
+
+// Llamar a la función al cargar y al activar/desactivar capas
+actualizarLeyenda();
+
+document.getElementById('chkComunas').addEventListener('change', actualizarLeyenda);
+document.getElementById('chkVias').addEventListener('change', actualizarLeyenda);
